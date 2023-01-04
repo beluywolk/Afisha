@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django import setup
 
 import movie_app.serializers
 from movie_app.models import Movie, Director, Review
