@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 
 import movie_app.serializers
 from movie_app.models import Movie, Director, Review
-from movie_app.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer
-from rest_framework.status import HTTP_200_OK
+from movie_app.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, MovieReviewSerializer
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 
 
 @api_view(['GET'])
@@ -19,12 +19,13 @@ def movies_show_view(request):
 @api_view(['GET'])
 def movie_detail_view(request, **a):
     if request.method == 'GET':
-        movie = Movie.objects.get(id=a['id'])
-
-        data = movie_app.serializers.MovieSerializer(movie).data
-        return Response(data=data, status=HTTP_200_OK)
-
-
+        try:
+            movie = Movie.objects.get(id=a['id'])
+            data = movie_app.serializers.MovieSerializer(movie).data
+            return Response(data=data, status=HTTP_200_OK)
+        except Movie.DoesNotExist:
+            return Response(status=HTTP_404_NOT_FOUND,
+                            data={'message': 'Sorry, we dont have something like that'})
 
 
 @api_view(['GET'])
@@ -40,10 +41,14 @@ def directors_views(request):
 @api_view(['GET'])
 def director_detail_view(request, **a):
     if request.method == 'GET':
-        director = Director.objects.get(id=a['id'])
+        try:
+            director = Director.objects.get(id=a['id'])
+            serializer = DirectorSerializer(director, many=False)
+            return Response(data=serializer.data, status=HTTP_200_OK)
+        except:
+            return Response(status=HTTP_404_NOT_FOUND,
+                            data={'message': 'Sorry, we dont have something like that'})
 
-        serializer = DirectorSerializer(director, many=False)
-        return Response(data=serializer.data, status=HTTP_200_OK)
 
 @api_view(['GET'])
 def reviews_views(request):
@@ -55,7 +60,17 @@ def reviews_views(request):
 @api_view(['GET'])
 def review_detail_view(request, **a):
     if request.method == 'GET':
-        review = Review.objects.get(id=a['id'])
+        try:
+            review = Review.objects.get(id=a['id'])
+            serializer = ReviewSerializer(review, many=False)
+            return Response(data=serializer.data, status=HTTP_200_OK)
+        except:
+            return Response(status=HTTP_404_NOT_FOUND,
+                            data={'message': 'Sorry, we dont have something like that'})
 
-        serializer = ReviewSerializer(review, many=False)
+@api_view(['GET'])
+def movies_review_view(request):
+    if request.method == 'GET':
+        movies = Movie.objects.all()
+        serializer = MovieReviewSerializer(movies, many=True)
         return Response(data=serializer.data, status=HTTP_200_OK)

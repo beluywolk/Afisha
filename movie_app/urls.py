@@ -1,6 +1,6 @@
 from django.urls import path
 from movie_app.views import movies_show_view, movie_detail_view, directors_views, director_detail_view, \
-    reviews_views, review_detail_view
+    reviews_views, review_detail_view, movies_review_view
 
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path('directors/', directors_views),
     path('directors/<int:id>/', director_detail_view),
     path('reviews/', reviews_views),
-    path('reviews/<int:id>', review_detail_view)
+    path('reviews/<int:id>', review_detail_view),
+    path('movies/reviews/', movies_review_view)
 
 ]
