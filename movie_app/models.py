@@ -15,7 +15,7 @@ class Movie(models.Model):
     director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name='movies')
 
     def __str__(self):
-        return self.name
+        return self.title
     @property
     def rating(self):
         count = self.reviews.all().count()
