@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from movie_app.models import Movie, Director, Review
+from rest_framework.exceptions import ValidationError
 
 class MovieNameSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +36,11 @@ class MovieCreateSerializer(serializers.Serializer):
     description = serializers.CharField()
     duration = serializers.IntegerField(required=False)
     director_id = serializers.IntegerField(min_value=1)
+    def validate_director_id(self, director_id):
+        directors = Director.objects.filter(id=director_id)
+        if not directors:
+            raise ValidationError('i dont know this director')
+
 
 class DirectorCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=30)
@@ -43,3 +49,9 @@ class ReviewCreateSerializer(serializers.Serializer):
     text = serializers.CharField()
     movie_id = serializers.IntegerField(min_value=1)
     stars = serializers.IntegerField(min_value=1, max_value=5)
+    def validate_movie_id(self, movie_id):
+        try:
+            Movie.objects.get(id=movie_id)
+        except:
+            raise ValidationError('i dont know this movie')
+        return movie_id
