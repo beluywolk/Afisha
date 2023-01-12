@@ -3,7 +3,7 @@ from movie_app.views import movies_show_view, movie_detail_view, directors_views
     reviews_views, review_detail_view, movies_review_view, MovieCreateListAPIView, MovieItemUpdateDeleteAPIView, \
     DirectorCreateListAPIView, ReviewModelViewSet, DirectorItemUpdateDeleteAPIView, MovieReviewListAPIView
 
-
+#hw6
 urlpatterns = [
     path('movies/', MovieCreateListAPIView.as_view()),
     path('movies/<int:id>/', MovieItemUpdateDeleteAPIView.as_view()),

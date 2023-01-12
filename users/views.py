@@ -6,7 +6,7 @@ from rest_framework import status
 from .serializers import UserValidateSerializer, UserCreateSerializer
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
-
+#hw6
 
 class AuthorizationAPIView(APIView):
     def post(self, request):
