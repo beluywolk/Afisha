@@ -7,6 +7,38 @@ from movie_app.models import Movie, Director, Review
 from movie_app.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, \
 MovieReviewSerializer, MovieCreateSerializer, DirectorCreateSerializer, ReviewCreateSerializer
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
+
+class MovieCreateListAPIView(ListCreateAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    pagination_class = PageNumberPagination
+
+class MovieItemUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    lookup_field = 'id'
+
+class DirectorCreateListAPIView(ListCreateAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+    pagination_class = PageNumberPagination
+
+class DirectorItemUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+    lookup_field = 'id'
+
+class ReviewModelViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    pagination_class = PageNumberPagination
+class MovieReviewListAPIView(ListAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieReviewSerializer
+    pagination_class = PageNumberPagination
 
 
 @api_view(['GET', 'POST'])
